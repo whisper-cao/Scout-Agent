@@ -31,6 +31,7 @@ Scout：先摸清目标技术栈与暴露面，再核查 Spring4Shell 的前置�
 
 模型自己排了取证顺序、自己发现了 CDN 缓存可能污染探针结果、
 自己做了 SHA256 交叉验证，最后诚实地说「证据不足」而不是硬下结论。
+<img width="1915" height="951" alt="image" src="https://github.com/user-attachments/assets/762ec40b-7e8b-46f4-8e26-1934bf442a21" />
 
 ## 核心特性
 
