@@ -1,0 +1,58 @@
+# 注意：不要写 container_name。
+# compose 会自动使用 "<项目名>-<服务名>" 作为容器名，
+# 这样同一台机器上可部署多个实例（项目名由 COMPOSE_PROJECT_NAME 决定，
+# deploy.sh 会根据目录名自动设置）。
+services:
+  scout:
+    build: .
+    image: scout-agent:1.0.0
+    restart: unless-stopped
+    # 后端不对外暴露：nginx 在同一 compose 网络内按服务名 scout:5000 访问。
+    # 映射它只会占用宿主机端口，且导致同机部署第二套实例时冲突。
+    # 如需直连调试，取消注释并改用 ${SCOUT_API_PORT:-5001} 这类不冲突的端口。
+    # ports:
+    #   - "127.0.0.1:${SCOUT_API_PORT:-5001}:5000"
+    environment:
+      SCOUT_DEFAULT_MODEL: "${SCOUT_DEFAULT_MODEL:-scout-pro}"
+      # 会话与凭据加密主密钥。务必设置，否则重启后已保存的 API Key 无法解密。
+      SCOUT_SECRET_KEY: "${SCOUT_SECRET_KEY:-}"
+      SCOUT_SESSION_TTL: "${SCOUT_SESSION_TTL:-604800}"
+      SCOUT_CONFIG_CACHE_TTL: "${SCOUT_CONFIG_CACHE_TTL:-60}"
+      # 全局默认网关（用户可在界面上按账号覆盖，留空则纯确定性工作流）
+      SCOUT_LLM_BASE: "${SCOUT_LLM_BASE:-}"
+      SCOUT_LLM_KEY: "${SCOUT_LLM_KEY:-}"
+      SCOUT_LLM_MODEL: "${SCOUT_LLM_MODEL:-qwen}"
+      SCOUT_MAX_STEPS: "${SCOUT_MAX_STEPS:-12}"
+      SCOUT_MAX_ROUNDS: "${SCOUT_MAX_ROUNDS:-12}"
+      TZ: "${TZ:-Asia/Shanghai}"
+    volumes:
+      - scout-data:/app/data
+    networks:
+      - scout-net
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:5000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # 入口反代（可选）：与内部服务共用 80 端口
+  gateway:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - scout
+    networks:
+      - scout-net
+
+volumes:
+  scout-data:
+    driver: local
+
+networks:
+  scout-net:
+    driver: bridge

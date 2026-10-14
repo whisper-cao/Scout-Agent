@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>登录 · Scout 安全测试工作台</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230d7d72'/%3E%3Cg fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='6'/%3E%3Cpath d='M15.6 15.6L20 20'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/styles.css">
+<link rel="stylesheet" href="/static/auth.css">
+</head>
+<body class="auth-body">
+
+<div class="auth-wrap">
+  <div class="auth-card" id="card">
+    <div class="auth-brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.2"/><path d="M15.6 15.6L21 21"/><path d="M11 8.4v5.2M8.4 11h5.2"/></svg>
+      </span>
+      <div>
+        <div class="auth-name">Scout</div>
+        <div class="auth-sub">企业安全测试 Agent 工作台</div>
+      </div>
+    </div>
+
+    <div class="auth-note" id="auth-note" hidden></div>
+
+    <form id="auth-form" autocomplete="on">
+      <label class="fld">
+        <span class="fld-l">用户名</span>
+        <input type="text" id="f-user" autocomplete="username" required minlength="3" placeholder="请输入用户名">
+      </label>
+
+      <label class="fld" id="f-pw-wrap">
+        <span class="fld-l">密码</span>
+        <div class="fld-in">
+          <input type="password" id="f-pw" autocomplete="current-password" required minlength="8" placeholder="至少 8 位">
+          <button type="button" class="fld-eye" id="f-eye" aria-label="显示密码">
+            <svg class="ic"><use href="#i-eye"></use></svg>
+          </button>
+        </div>
+      </label>
+
+      <label class="fld hidden" id="f-pw2-wrap">
+        <span class="fld-l">确认密码</span>
+        <input type="password" id="f-pw2" autocomplete="new-password" minlength="8" placeholder="再次输入密码">
+      </label>
+
+      <label class="fld hidden" id="f-inv-wrap">
+        <span class="fld-l">邀请码</span>
+        <input type="text" id="f-inv" autocomplete="off" spellcheck="false" placeholder="向管理员申请">
+      </label>
+
+      <label class="fld hidden" id="f-dn-wrap">
+        <span class="fld-l">显示名称<span class="fld-opt">（选填）</span></span>
+        <input type="text" id="f-dn" placeholder="例如：安全运维组">
+      </label>
+
+      <div class="auth-err" id="auth-err" hidden></div>
+
+      <button type="submit" class="auth-btn" id="f-submit">登录</button>
+    </form>
+
+    <div class="auth-foot" id="auth-foot"><span id="auth-foot-text"></span>
+      <button type="button" id="auth-switch" hidden></button>
+    </div>
+  </div>
+
+  <div class="auth-legal">
+    仅在授权资产范围内使用 · 默认只读探测 · 写入操作需人工确认
+  </div>
+</div>
+
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5L9.2 17.3 4 12.1"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.9 18a2 2 0 001.7 3h16.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/><path d="M12 9.5v4M12 17.2h.01"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2"/><path d="M8 10.5V7.2a4 4 0 018 0v3.3"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0115 0"/></symbol>
+</svg>
+
+<script src="/static/auth.js"></script>
+</body>
+</html>
